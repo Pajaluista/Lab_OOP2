@@ -1,10 +1,7 @@
 package functions;
 
 public class MockTabulatedFunction extends AbstractTabulatedFunction {
-    private final double x0;
-    private final double x1;
-    private final double y0;
-    private final double y1;
+    private final double x0, x1, y0, y1;
 
     public MockTabulatedFunction(double x0, double x1, double y0, double y1) {
         if (x0 >= x1) {
@@ -16,10 +13,9 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
         this.y1 = y1;
     }
 
-    // Реализация абстрактных методов из TabulatedFunction
     @Override
     public int getCount() {
-        return 2; // Всегда 2 точки
+        return 2;
     }
 
     @Override
@@ -27,7 +23,7 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
         switch (index) {
             case 0: return x0;
             case 1: return x1;
-            default: throw new IllegalArgumentException("Index must be 0 or 1");
+            default: throw new IllegalArgumentException("Invalid index: " + index);
         }
     }
 
@@ -36,23 +32,13 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
         switch (index) {
             case 0: return y0;
             case 1: return y1;
-            default: throw new IllegalArgumentException("Index must be 0 or 1");
+            default: throw new IllegalArgumentException("Invalid index: " + index);
         }
     }
 
     @Override
     public void setY(int index, double value) {
         throw new UnsupportedOperationException("Mock object is immutable");
-    }
-
-    @Override
-    public double leftBound() {
-        return x0;
-    }
-
-    @Override
-    public double rightBound() {
-        return x1;
     }
 
     @Override
@@ -69,29 +55,35 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
         return -1;
     }
 
-    // Реализация абстрактных методов для интерполяции/экстраполяции
+    @Override
+    public double leftBound() {
+        return x0;
+    }
+
+    @Override
+    public double rightBound() {
+        return x1;
+    }
+
     @Override
     protected int floorIndexOfX(double x) {
-        if (x < x0) return 0; // Экстраполяция слева
-        if (x < x1) return 0; // Интерполяция в единственном интервале
-        return 0; // Экстраполяция справа
+        if (x < x0) return 0;
+        if (x > x1) return 1; // Исправлено: должно возвращать 1 для экстраполяции справа
+        return 0; // Для интерполяции в единственном интервале
     }
 
     @Override
     protected double extrapolateLeft(double x) {
-        // Используем первый интервал для экстраполяции слева
-        return interpolate(x, x0, y0, x1, y1);
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
     protected double extrapolateRight(double x) {
-        // Используем первый интервал для экстраполяции справа
-        return interpolate(x, x0, y0, x1, y1);
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
     protected double interpolate(double x, int floorIndex) {
-        // floorIndex всегда 0, так как у нас только один интервал
-        return interpolate(x, x0, y0, x1, y1);
+        return interpolate(x, x0, x1, y0, y1);
     }
 }

@@ -30,7 +30,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         }
 
         int index = indexOfX(x);
-        if (index >= 0) {
+        if (index != -1) {
             // Точное совпадение
             return getY(index);
         }
@@ -40,8 +40,11 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         return interpolate(x, floorIndex);
     }
 
-    // Вспомогательный метод для линейной интерполяции
-    protected double interpolate(double x, double leftX, double leftY, double rightX, double rightY) {
+    // Вспомогательный метод для линейной интерполяции (ИСПРАВЛЕННЫЙ ПОРЯДОК АРГУМЕНТОВ)
+    protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
+        if (Math.abs(rightX - leftX) < 1e-10) {
+            return leftY; // Если точки совпадают
+        }
         return leftY + (rightY - leftY) * (x - leftX) / (rightX - leftX);
     }
 
@@ -56,5 +59,36 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    // Можно добавить метод equals для сравнения табличных функций
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        TabulatedFunction other = (TabulatedFunction) obj;
+        if (this.getCount() != other.getCount()) return false;
+
+        for (int i = 0; i < getCount(); i++) {
+            if (Math.abs(this.getX(i) - other.getX(i)) > 1e-10 ||
+                    Math.abs(this.getY(i) - other.getY(i)) > 1e-10) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // И hashCode для корректной работы с коллекциями
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < getCount(); i++) {
+            long xBits = Double.doubleToLongBits(getX(i));
+            long yBits = Double.doubleToLongBits(getY(i));
+            result = 31 * result + (int) (xBits ^ (xBits >>> 32));
+            result = 31 * result + (int) (yBits ^ (yBits >>> 32));
+        }
+        return result;
     }
 }

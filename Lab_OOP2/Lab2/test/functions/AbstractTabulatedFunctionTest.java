@@ -79,4 +79,34 @@ class AbstractTabulatedFunctionTest {
         assertEquals(5.0, function.apply(2.0), 1e-10); // Внутри интервала
         assertEquals(8.0, function.apply(3.0), 1e-10); // На правой границе
     }
+    @Test
+    public void testInterpolate() {
+        MockTabulatedFunction mock = new MockTabulatedFunction(0.0, 2.0, 0.0, 4.0);
+
+        // Тестирование защищенного метода interpolate через mock
+        // В середине: x=1.0 должен дать y=2.0
+        double result = mock.apply(1.0);
+        assertEquals(2.0, result, 1e-10);
+    }
+
+    @Test
+    public void testApplyExtrapolation() {
+        MockTabulatedFunction mock = new MockTabulatedFunction(0.0, 2.0, 0.0, 4.0);
+
+        // Экстраполяция слева
+        assertEquals(-2.0, mock.apply(-1.0), 1e-10);
+
+        // Экстраполяция справа
+        assertEquals(6.0, mock.apply(3.0), 1e-10);
+    }
+
+    @Test
+    public void testApplyExactValue() {
+        MockTabulatedFunction mock = new MockTabulatedFunction(0.0, 2.0, 0.0, 4.0);
+
+        // Точное значение
+        assertEquals(0.0, mock.apply(0.0), 1e-10);
+        assertEquals(4.0, mock.apply(2.0), 1e-10);
+    }
+
 }
