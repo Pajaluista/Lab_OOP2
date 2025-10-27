@@ -64,5 +64,20 @@ public class TabulatedDifferentialOperator implements DifferentialOperator<Tabul
 
         // Создаем новую табулированную функцию через фабрику
         return factory.create(xValues, derivativeValues);
+
+
+    }
+    public TabulatedFunction deriveSynchronously(TabulatedFunction function) {
+        SynchronizedTabulatedFunction syncFunction;
+
+        // Проверяем, является ли функция уже синхронизированной
+        if (function instanceof SynchronizedTabulatedFunction) {
+            syncFunction = (SynchronizedTabulatedFunction) function;
+        } else {
+            syncFunction = new SynchronizedTabulatedFunction(function);
+        }
+
+        // Выполняем операцию вычисления производной в синхронизированном блоке
+        return syncFunction.doSynchronously(func -> this.derive(func));
     }
 }
