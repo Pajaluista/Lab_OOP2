@@ -79,13 +79,33 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
 
     @Override
     public Iterator<Point> iterator() {
+        Point[] snapshot;
         synchronized (lock) {
-            Point[] points = new Point[function.getCount()];
-            for (int i = 0; i < function.getCount(); i++) {
-                points[i] = new Point(function.getX(i), function.getY(i));
+            // Создаём копию всех точек — "снимок" состояния функции
+            int count = function.getCount();
+            snapshot = new Point[count];
+            for (int i = 0; i < count; i++) {
+                snapshot[i] = new Point(function.getX(i), function.getY(i));
             }
-            return Arrays.asList(points).iterator();
         }
+
+        // Возвращаем анонимный итератор по копии (snapshot)
+        return new Iterator<Point>() {
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index < snapshot.length;
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext()) {
+                    throw new java.util.NoSuchElementException();
+                }
+                return snapshot[index++];
+            }
+        };
     }
 
     // Интерфейс для операций
