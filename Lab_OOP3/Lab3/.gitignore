@@ -1,0 +1,38 @@
+# Папка output - НЕ должна попадать в репозиторий
+/output/
+
+# Папка input - можно добавить или не добавлять (по желанию)
+#/input/
+
+# Compiled class files
+*.class
+
+# Build directories
+target/
+build/
+bin/
+out/
+
+# IDE files (IntelliJ IDEA)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Unit test reports
+TEST*.xml
+Lab_OOP2
+Lab2.7z
+Lab3.zip
