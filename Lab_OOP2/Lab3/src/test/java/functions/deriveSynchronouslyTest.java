@@ -23,6 +23,6 @@ public class TabulatedDifferentialOperatorTest {
 
         TabulatedFunction result = operator.deriveSynchronously(syncFunction);
         assertNotNull(result);
-
+        // Дополнительные проверки
     }
 }
