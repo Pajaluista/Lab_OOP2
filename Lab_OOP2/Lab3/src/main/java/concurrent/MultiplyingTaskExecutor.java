@@ -7,7 +7,7 @@ import functions.LinkedListTabulatedFunction;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ImprovedMultiplyingTaskExecutor {
+public class MultiplyingTaskExecutor {
 
     static class TrackableMultiplyingTask implements Runnable {
         private final TabulatedFunction function;
