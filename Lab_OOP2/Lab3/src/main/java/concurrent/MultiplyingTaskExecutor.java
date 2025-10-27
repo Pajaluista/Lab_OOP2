@@ -48,7 +48,7 @@ public class MultiplyingTaskExecutor {
         Map<String, TrackableMultiplyingTask> tasks = new ConcurrentHashMap<>();
 
         // Создаем и запускаем задачи
-        for (int i =  ɪ; i < taskCount; i++) {
+        for (int i =  0; i < taskCount; i++) {
             String taskId = "Task-" + (i + 1);
             TrackableMultiplyingTask task = new TrackableMultiplyingTask(function, taskId);
             tasks.put(taskId, task);
