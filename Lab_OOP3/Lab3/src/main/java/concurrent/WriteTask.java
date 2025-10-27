@@ -15,8 +15,11 @@ public class WriteTask implements Runnable {
     public void run() {
         int count = function.getCount();
         for (int i = 0; i < count; i++) {
-            function.setY(i, value);
-            System.out.printf("Writing for index %d complete%n", i);
+            synchronized (function) {//Это — блок синхронизации в Java.Он гарантирует, что только один поток одновременно может выполнять код внутри этого блока для одного и того же объекта-монитора
+                function.setY(i, value);
+                System.out.printf("Writing for index %d complete%n", i);
+            }
+
         }
     }
 }
