@@ -2,12 +2,7 @@ package operations;
 
 import functions.MathFunction;
 
-/**
- Это абстрактный класс, который является общим для всех операторов с шагом.
- Он реализует DifferentialOperator<MathFunction>.
- Сохраняет шаг step, который используется в разностных производных.
- Проверяет, что шаг выполнен правильно.
- */
+
 public abstract class SteppingDifferentialOperator implements DifferentialOperator<MathFunction> {
     protected double step;
 
