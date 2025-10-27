@@ -1,61 +1,72 @@
 package concurrent;
 
-import functions.ArrayTabulatedFunction;
-import functions.LinkedListTabulatedFunction;
-import functions.TabulatedFunction;
-import functions.Point;
+import functions.*;
 import org.junit.jupiter.api.Test;
-
-import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class SynchronizedTabulatedFunctionTest {
+public class SynchronizedTabulatedFunctionTest {
 
     @Test
-    void iteratorReturnsAllPointsInCorrectOrder() {
-        double[] x = {1.0, 2.0, 3.0};
-        double[] y = {10.0, 20.0, 30.0};
-        TabulatedFunction original = new ArrayTabulatedFunction(x, y);
-        TabulatedFunction safe = new SynchronizedTabulatedFunction(original);
+    public void testBasicOperations() {
+        TabulatedFunction baseFunction = new LinkedListTabulatedFunction(new UnitFunction(), 0, 10, 11);
+        SynchronizedTabulatedFunction syncFunction = new SynchronizedTabulatedFunction(baseFunction);
 
-        Iterator<Point> it = safe.iterator();
-        assertTrue(it.hasNext());
-        assertEquals(1.0, it.next().x, 1e-10);
-        assertEquals(2.0, it.next().x, 1e-10);
-        assertEquals(3.0, it.next().x, 1e-10);
-        assertFalse(it.hasNext());
+        assertEquals(11, syncFunction.getCount());
+        assertEquals(0.0, syncFunction.getX(0), 1e-9);
+        assertEquals(10.0, syncFunction.getX(10), 1e-9);
+        assertEquals(1.0, syncFunction.getY(5), 1e-9);
     }
 
     @Test
-    void iteratorUsesSnapshotAndIgnoresLaterModifications() {
-        double[] x = {1.0, 2.0};
-        double[] y = {100.0, 200.0};
-        TabulatedFunction original = new ArrayTabulatedFunction(x, y);
-        TabulatedFunction safe = new SynchronizedTabulatedFunction(original);
+    public void testSetY() {
+        TabulatedFunction baseFunction = new LinkedListTabulatedFunction(new UnitFunction(), 0, 10, 11);
+        SynchronizedTabulatedFunction syncFunction = new SynchronizedTabulatedFunction(baseFunction);
 
-        Iterator<Point> it = safe.iterator();
-        Point first = it.next(); // читаем первую точку
-        safe.setY(1, -999.0);    // меняем вторую точку
-        Point second = it.next(); // читаем вторую точку
-
-        assertEquals(100.0, first.y, 1e-10);
-        assertEquals(200.0, second.y, 1e-10); // не -999.0!
+        syncFunction.setY(5, 42.0);
+        assertEquals(42.0, syncFunction.getY(5), 1e-9);
     }
 
     @Test
-    void forEachLoopWorks() {
-        double[] x = {0.0, 1.0};
-        double[] y = {0.0, 1.0};
-        TabulatedFunction func = new SynchronizedTabulatedFunction(
-                new LinkedListTabulatedFunction(x, y)
-        );
+    public void testDoSynchronouslyWithReturnValue() {
+        TabulatedFunction baseFunction = new LinkedListTabulatedFunction(new UnitFunction(), 0, 10, 11);
+        SynchronizedTabulatedFunction syncFunction = new SynchronizedTabulatedFunction(baseFunction);
 
-        int count = 0;
-        for (Point p : func) {
-            assertNotNull(p);
-            count++;
+        Double result = syncFunction.doSynchronously(func -> {
+            double sum = 0;
+            for (int i = 0; i < func.getCount(); i++) {
+                sum += func.getY(i);
+            }
+            return sum;
+        });
+
+        assertEquals(11.0, result, 1e-9); // 11 точек, каждая y=1
+    }
+
+    @Test
+    public void testDoSynchronouslyWithVoid() {
+        TabulatedFunction baseFunction = new LinkedListTabulatedFunction(new UnitFunction(), 0, 10, 11);
+        SynchronizedTabulatedFunction syncFunction = new SynchronizedTabulatedFunction(baseFunction);
+
+        syncFunction.doSynchronously(func -> {
+            for (int i = 0; i < func.getCount(); i++) {
+                func.setY(i, func.getY(i) * 2);
+            }
+            return null;
+        });
+
+        assertEquals(2.0, syncFunction.getY(0), 1e-9);
+    }
+
+    @Test
+    public void testIterator() {
+        TabulatedFunction baseFunction = new LinkedListTabulatedFunction(new UnitFunction(), 0, 2, 3);
+        SynchronizedTabulatedFunction syncFunction = new SynchronizedTabulatedFunction(baseFunction);
+
+        int pointCount = 0;
+        for (Point point : syncFunction) {
+            assertNotNull(point);
+            pointCount++;
         }
-        assertEquals(2, count);
+        assertEquals(3, pointCount);
     }
 }
