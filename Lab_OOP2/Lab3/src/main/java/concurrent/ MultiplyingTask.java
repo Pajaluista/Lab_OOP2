@@ -19,4 +19,5 @@ public class MultiplyingTask implements Runnable {
         }
         System.out.println("Поток " + Thread.currentThread().getName() + " закончил выполнение задачи");
     }
+
 }
