@@ -2,11 +2,7 @@ package operations;
 
 import functions.MathFunction;
 
-/**
- Это класс, который реализует среднюю разностную производную.
- Он наследуется от SteppingDifferentialOperator.
- Использует шаг step для приближённого вычисления производной.
- */
+
 public class MiddleSteppingDifferentialOperator extends SteppingDifferentialOperator {
     public MiddleSteppingDifferentialOperator(double step) {
         super(step);

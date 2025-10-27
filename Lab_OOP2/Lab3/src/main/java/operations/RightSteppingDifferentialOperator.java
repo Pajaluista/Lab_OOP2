@@ -1,11 +1,7 @@
 package operations;
 
 import functions.MathFunction;
-/**Что такое RightSteppingDifferentialOperator?
- 📌 Это класс, который реализует правую разностную производную.
- Он наследуется от SteppingDifferentialOperator.
- Использует шаг step для приближённого вычисления производной.
- */
+
 public class RightSteppingDifferentialOperator extends SteppingDifferentialOperator {
     public RightSteppingDifferentialOperator(double step) {
         super(step);

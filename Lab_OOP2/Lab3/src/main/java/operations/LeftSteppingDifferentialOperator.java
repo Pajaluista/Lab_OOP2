@@ -2,11 +2,7 @@ package operations;
 
 import functions.MathFunction;
 
-/**
- Это класс, который реализует левую разностную производную.
- Он наследуется от SteppingDifferentialOperator.
- Использует шаг step для приближённого вычисления производной.
- */
+
 public class LeftSteppingDifferentialOperator extends SteppingDifferentialOperator {
     public LeftSteppingDifferentialOperator(double step) {
         super(step);

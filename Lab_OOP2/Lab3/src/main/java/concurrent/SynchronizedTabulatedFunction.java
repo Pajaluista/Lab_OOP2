@@ -2,6 +2,8 @@ package concurrent;
 
 import functions.TabulatedFunction;
 import functions.Point;
+import java.util.Iterator;
+import java.util.Arrays;
 
 public class SynchronizedTabulatedFunction implements TabulatedFunction {
     private final TabulatedFunction function;
@@ -64,6 +66,14 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
     public double rightBound() {
         synchronized (lock) {
             return function.rightBound();
+        }
+    }
+
+    // ДОБАВЛЕН недостающий метод apply(double)
+    @Override
+    public double apply(double x) {
+        synchronized (lock) {
+            return function.apply(x);
         }
     }
 

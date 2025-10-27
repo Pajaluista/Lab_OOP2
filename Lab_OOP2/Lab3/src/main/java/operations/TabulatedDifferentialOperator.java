@@ -3,16 +3,12 @@ package operations;
 import functions.factory.TabulatedFunctionFactory;
 import functions.factory.ArrayTabulatedFunctionFactory;
 import functions.TabulatedFunction;
+import concurrent.SynchronizedTabulatedFunction;
 import functions.factory.LinkedListTabulatedFunctionFactory;
 import functions.Point;
 import java.util.Iterator;
 
-/**
- Это абстрактный класс, который является общим для всех операторов с шагом.
- Он реализует DifferentialOperator<MathFunction>.
- Сохраняет шаг step, который используется в разностных производных.
- Проверяет, что шаг выполнен правильно.
- */
+
 public class TabulatedDifferentialOperator implements DifferentialOperator<TabulatedFunction> {
 
     private TabulatedFunctionFactory factory;

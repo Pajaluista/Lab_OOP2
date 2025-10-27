@@ -7,7 +7,7 @@ import functions.LinkedListTabulatedFunction;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ImprovedMultiplyingTaskExecutor {
+public class MultiplyingTaskExecutor {
 
     static class TrackableMultiplyingTask implements Runnable {
         private final TabulatedFunction function;
@@ -48,7 +48,7 @@ public class ImprovedMultiplyingTaskExecutor {
         Map<String, TrackableMultiplyingTask> tasks = new ConcurrentHashMap<>();
 
         // Создаем и запускаем задачи
-        for (int i =  ɪ; i < taskCount; i++) {
+        for (int i =  0; i < taskCount; i++) {
             String taskId = "Task-" + (i + 1);
             TrackableMultiplyingTask task = new TrackableMultiplyingTask(function, taskId);
             tasks.put(taskId, task);
