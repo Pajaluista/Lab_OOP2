@@ -1,0 +1,7 @@
+
+| Operation                                                              | manual (JDBC) | framework (Spring Data JPA) |
+| ---------------------------------------------------------------------- | ------------- | --------------------------- |
+| SELECT + Sort by Name (ASC) для 10k функций                            | **104 мс**    | **163 мс**                  |
+| SELECT + Sort by Creation Date (DESC) для 10k функций                  | **152 мс**    | **226 мс**                  |
+| SELECT + Sort by Creation Date (DESC) для 10k пользователей            | **87 мс**     | **131 мс**                  |
+| SELECT + Pagination (page=50) + Sort by Username для 10k пользователей | **212 мс**    | **284 мс**                  |
