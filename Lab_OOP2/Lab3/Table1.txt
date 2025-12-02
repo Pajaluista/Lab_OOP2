@@ -1,7 +1,7 @@
 | Operation                                  | manual (JDBC) | framework (Spring Data JPA) |
 | ------------------------------------------ | ------------- | --------------------------- |
-| **Bulk insert (1000 records)**             | **4.87 s**    | **7.91 s**                  |
-| **Single-row lookup ×1000**                | **2.63 s**    | **3.98 s**                  |
-| **Batch fetch: 100 functions ×100 **       | **2.18 s**    | **3.34 s**                  |
-| **Bulk update (1000 entries)**             | **2.42 s**    | **3.05 s**                  |
-| **Bulk delete (1000 entries)**             | **2.29 s**    | **2.96 s**                  |
+|   Bulk insert (1000 records)               |   4.87 s      |   7.91 s                    |
+|   Single-row lookup ×1000                  |   2.63 s      |   3.98 s                    |
+|   Batch fetch: 100 functions ×100          |   2.18 s      |   3.34 s                    |
+|   Bulk update (1000 entries)               |   2.42 s      |   3.05 s                    |
+|   Bulk delete (1000 entries)               |   2.29 s      |   2.96 s                    |
